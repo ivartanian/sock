@@ -1,0 +1,93 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>WebSocket Tester</title>-->
+    <!--<script language="javascript" type="text/javascript"-->
+            <!--src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+    <!--<script language="javascript" type="text/javascript"-->
+            <!--src="sockjs-0.3.4.js"></script>-->
+    <!--<script language="javascript" type="text/javascript">-->
+        <!--var ping;-->
+        <!--var websocket;-->
+        <!--jQuery(function ($) {-->
+            <!--function writePing(message) {-->
+                <!--$('#pingOutput').val($('#pingOutput').val() + message + '\n');-->
+            <!--}-->
+
+            <!--function writeStatus(message) {-->
+                <!--$("#statusOutput").val($("#statusOutput"). val() + message + '\n');-->
+            <!--}-->
+
+            <!--function writeMessage(message) {-->
+                <!--$("#messageOutput").val($("#messageOutput").val() + message + '\n');-->
+            <!--}-->
+
+            <!--$('#connect').click(function doConnect() {-->
+                <!--websocket = new SockJS($("#target").val());-->
+                <!--websocket.onopen = function (evt) {-->
+                    <!--writeStatus("CONNECTED");-->
+                    <!--ping = setInterval(function () {-->
+                        <!--if (websocket != "undefined") {-->
+                            <!--websocket.send("ping");-->
+                        <!--}-->
+                    <!--}, 3000);-->
+                <!--};-->
+
+                <!--websocket.onclose = function (evt) {-->
+                    <!--writeStatus("DISCONNECTED");-->
+                <!--}-->
+                <!--;-->
+                <!--websocket.onmessage = function (evt) {-->
+                    <!--if (evt.data === "ping") {-->
+                        <!--writePing(evt.data);-->
+                    <!--}-->
+                    <!--else {-->
+                        <!--writeMessage('ECHO: ' + evt.data);-->
+                    <!--}-->
+                <!--};-->
+                <!--websocket.onerror = function (evt) {-->
+                    <!--onerror(writeStatus('ERROR:' + evt.data))-->
+                <!--};-->
+
+            <!--});-->
+
+            <!--$('#disconnect').click(function () {-->
+                <!--if (typeof websocket != 'undefined') {-->
+                    <!--websocket.close();-->
+                    <!--websocket = undefined;-->
+                <!--}-->
+                <!--else {-->
+                    <!--alert("Not connected.");-->
+                <!--}-->
+            <!--});-->
+            <!--$('#send').click(function () {-->
+                <!--console.log(websocket);-->
+                <!--if (typeof websocket != 'undefined') {-->
+                    <!--websocket.send($("#message").val());-->
+                <!--}-->
+                <!--else {-->
+                    <!--alert("Not connected.");-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>WebSocket Tester</h2>-->
+<!--Target: <input type="text" id="target" size="40" value="http://localhost:8080/echoHandler"/> <br/>-->
+<!--<button id="connect">Connect</button>-->
+<!--<button id="disconnect">Disconnect</button>-->
+<!--<br/>-->
+<!--<br/>-->
+<!--Message: <input type="text" id="message" value=""/>-->
+<!--<button id="send">Send</button>-->
+<!--<br/>-->
+<!--<p>Status output:</p>-->
+<!--<label for="statusOutput"></label><textarea id="statusOutput" rows="10" cols="50"></textarea>-->
+<!--<p>Message output:</p>-->
+<!--<pre><label for="messageOutput"></label><textarea id="messageOutput" rows="10" cols="50"></textarea></pre>-->
+<!--<p>Ping output:</p>-->
+<!--<pre><label for="pingOutput"></label><textarea id="pingOutput" rows="10" cols="50"></textarea></pre>-->
+<!--</body>-->
+<!--</html>-->
