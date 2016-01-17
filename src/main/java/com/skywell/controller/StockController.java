@@ -43,6 +43,7 @@ public class StockController {
             stock.setDate(new Date());
         }
         simpMessagingTemplate.convertAndSend("/topic/price", stocks);
+        simpMessagingTemplate.convertAndSend("/topic/string", "Hello");
     }
 
     private double getUpdatedStockPrice() {

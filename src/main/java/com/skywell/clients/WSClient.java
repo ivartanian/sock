@@ -2,10 +2,7 @@ package com.skywell.clients;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.converter.StringMessageConverter;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandler;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.messaging.simp.stomp.*;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
@@ -20,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.lang.reflect.Type;
 
 /**
  * Created by viv on 15.01.2016.
@@ -51,7 +49,39 @@ public class WSClient {
 
         @Override
         public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-            System.out.println("!!!!!!!!!!!!!");
+            session.subscribe("/topic/string", new StompFrameHandler() {
+
+                @Override
+                public Type getPayloadType(StompHeaders headers) {
+                    return String.class;
+                }
+
+                @Override
+                public void handleFrame(StompHeaders headers, Object payload) {
+                    System.out.println(payload);
+                }
+
+            });
+        }
+
+        @Override
+        public Type getPayloadType(StompHeaders headers) {
+            return super.getPayloadType(headers);
+        }
+
+        @Override
+        public void handleFrame(StompHeaders headers, Object payload) {
+            super.handleFrame(headers, payload);
+        }
+
+        @Override
+        public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload, Throwable exception) {
+            super.handleException(session, command, headers, payload, exception);
+        }
+
+        @Override
+        public void handleTransportError(StompSession session, Throwable exception) {
+            super.handleTransportError(session, exception);
         }
     }
 
@@ -64,13 +94,10 @@ public class WSClient {
             WebSocketStompClient stompClient = new WebSocketStompClient(transport);
             stompClient.setMessageConverter(new StringMessageConverter());
 //            stompClient.setTaskScheduler(timer); // for heartbeats, receipts
-
-            String url = "ws://192.168.56.1:8080/app/ws";
+            stompClient.setMessageConverter(new StringMessageConverter());
+            String url = "ws://192.168.56.1:8080/ws";
             StompSessionHandler handler = new MySessionHandler();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("quest", "quest");
-            stompClient.connect(url, new WebSocketHttpHeaders(headers), handler);
-
+            stompClient.connect(url, handler);
 
             wait4TerminateSignal();
         } catch (Exception e) {
